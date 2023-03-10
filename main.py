@@ -10,13 +10,18 @@ db = 'carga.db'
 
 
 df = pd.read_excel("info/data.xlsx", sheet_name=None)
+
+aplicadores = df['50160']
+
 auto = trim_auto(df['10400'])
 
 maquinas, turnos, tCambios = carga.allInfo(con(db), 'm1')
 
-status = carga.status(maquinas, auto, turnos)
-cambios = corte.cambios(auto, maquinas, tCambios)
-print(cambios)
+# status = carga.status(maquinas, auto, turnos)
+# cambios = corte.cambios(auto, maquinas, tCambios)
+apps(aplicadores)
+
+# print(aplicadores)
 
 
 
