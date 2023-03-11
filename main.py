@@ -15,11 +15,13 @@ aplicadores = df['50160']
 
 auto = trim_auto(df['10400'])
 
-maquinas, turnos, tCambios = carga.allInfo(con(db), 'm1')
+# maquinas, turnos, tCambios = carga.allInfo(con(db), 'm1')
 
 # status = carga.status(maquinas, auto, turnos)
 # cambios = corte.cambios(auto, maquinas, tCambios)
-apps(aplicadores)
+
+apps = apps(aplicadores)
+specificStatus(auto, apps)
 
 # print(aplicadores)
 
