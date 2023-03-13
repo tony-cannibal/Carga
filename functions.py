@@ -1,3 +1,4 @@
+import pandas as pd
 
 def trim_auto(df):
     columns = [2, 8, 9, 21, 22]
@@ -7,7 +8,6 @@ def trim_auto(df):
     # print(df.columns)
     df.to_excel('corte.xlsx', index=False)
     return df
-
 
 
 def apps(df):
@@ -21,13 +21,53 @@ def apps(df):
         appList[i] = []
         for a in range(len(df_list)):
             if i == df_list[a][2]:
-                appList[i].append(df_list[a][:-1])
+                appList[i].append(df_list[a][1])
     # for i in appList['A001']:
     #     print(i)
+    # print(appList['A001'])
     return appList
 
-def specificStatus(corte, aplicadores):
-    corte = corte.to_dict('list')
-    for i in corte:
-        print(i)
+def app(maquina, terminal, con):
+    cur = con.cursor()
+    res = cur.execute('''
+                SELECT * FROM applicadores WHERE maquina = ? and app = ?;
+                ''', (maquina, terminal[0:10]))
+    res = res.fetchall()
+    if res:
+        return True
+    else: 
+        return False
+    
 
+
+def specificStatus(corte, apps, con):
+    d_corte = corte.to_dict('list')
+    d_corte['appAutoL'] = []
+    for i in range(len(d_corte['Maquina'])):
+        maquina = d_corte['Maquina'][i]
+        terminal = d_corte['TMNL_L(Auto)'][i]
+        if terminal != '':
+            if d_corte['Maquina'][i] != 'SLD1':
+                if app(maquina, terminal, con):
+                    d_corte['appAutoL'].append('ok')
+                else:
+                    d_corte['appAutoL'].append('err')
+            else:
+                d_corte['appAutoL'].append('n/a')
+        else:
+            d_corte['appAutoL'].append('ok')
+
+
+    d_corte['appAutoR'] = []
+    for i in range(len(d_corte['Maquina'])):
+        terminal = d_corte['TMNL_R(Auto)'][i][0:10]
+        if d_corte['Maquina'][i] != 'SLD1':
+            if terminal in apps[d_corte['Maquina'][i]] or terminal == '':
+                d_corte['appAutoR'].append('ok')
+            else:
+                d_corte['appAutoR'].append('err')
+        else:
+            d_corte['appAutoR'].append('n/a')
+
+    o_corte = pd.DataFrame.from_dict(d_corte)
+    return o_corte

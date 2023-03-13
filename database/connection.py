@@ -29,6 +29,31 @@ def deploydb(db):
     cur.close()
     db.close()
 
+def deploy_helper(db):
+    cur = db.cursor()
+    cur.execute('''
+                CREATE TABLE IF NOT EXISTS prensas (
+                    lot VARCHAR(20),
+                    pn VARCHAR(20),
+                    terminal_union VARCHAR(15),
+                    circuito VARCHAR(8),
+                    terminal_l VARCHAR(15),
+                    terminal_r VARCHAR(15),
+                    sub_material VARCHAR(15),
+                    maquina VARCHAR(5),
+                    proceso VARCHAR(50)
+                    );''')
+    cur.execute('''
+                CREATE TABLE IF NOT EXISTS applicadores (
+                    maquina VARCHAR(5),
+                    app VARCHAR(12),
+                    codigo_app VARCHAR(10)
+                    )
+                ''')
+    cur.close()
+    db.close()
+
+
 def populateMaquinas(db, data):
     df = pd.read_excel(data)
     df = df.values.tolist()

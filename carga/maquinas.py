@@ -34,5 +34,33 @@ def allInfo(db, area):
     tCam = tiemposDeCambio(db)
     return maq, turn, tCam
 
+def updateHelper(prensas, apps, con):
+    cur = con.cursor()
+    cur.execute('DELETE FROM applicadores;')
+    cur.execute('DELETE FROM prensas;')
+    prensas = prensas.values.tolist()
+    for i in prensas:
+        cur.execute('''
+            INSERT INTO prensas (
+                lot, pn, terminal_union, circuito,
+                terminal_l, terminal_r,
+                sub_material, maquina, proceso
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?
+            );''', (i[1], i[2], i[3], i[7], i[12], i[13], i[14], i[15], i[17]))
+        con.commit()
+
+    apps = apps.values.tolist()
+    for i in apps:
+        cur.execute('''
+            INSERT INTO applicadores (
+                maquina, app, codigo_app
+            ) VALUES (
+                ?, ?, ?
+            );''', (i[3], i[1], i[0]))
+        con.commit()
+    cur.close()
+    con.close()
+
 
 
