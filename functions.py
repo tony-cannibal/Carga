@@ -45,22 +45,16 @@ def app(maquina, terminal, con):
         return False
 
 
+def prensas(circuito, lote, terminal, con):
+    pass
+
+
 def specificStatus(corte, con):
     d_corte = corte.to_dict("list")
     d_corte["appAutoL"] = []
     for i in range(len(d_corte["Maquina"])):
         maquina = d_corte["Maquina"][i]
         terminal = d_corte["TMNL_L(Auto)"][i]
-        # if terminal != "":
-        #     if d_corte["Maquina"][i] != "SLD1":
-        #         if app(maquina, terminal, con):
-        #             d_corte["appAutoL"].append("ok")
-        #         else:
-        #             d_corte["appAutoL"].append("err")
-        #     else:
-        #         d_corte["appAutoL"].append("n/a")
-        # else:
-        #     d_corte["appAutoL"].append("ok")
         if terminal == '':
             d_corte["appAutoL"].append('')
         else:
@@ -73,16 +67,6 @@ def specificStatus(corte, con):
     for i in range(len(d_corte["Maquina"])):
         maquina = d_corte["Maquina"][i]
         terminal = d_corte["TMNL_R(Auto)"][i][0:10]
-        # if terminal != "":
-        #     if d_corte["Maquina"][i] != "SLD1":
-        #         if app(maquina, terminal, con):
-        #             d_corte["appAutoR"].append("ok")
-        #         else:
-        #             d_corte["appAutoR"].append("err")
-        #     else:
-        #         d_corte["appAutoR"].append("n/a")
-        # else:
-        #     d_corte["appAutoR"].append("ok")
         if terminal == '':
             d_corte["appAutoR"].append('')
         else:
