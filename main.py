@@ -5,9 +5,8 @@ from database import connection as con
 from functions import *
 
 
-
-db = 'carga.db'
-help_db = 'helper.db'
+db = "carga.db"
+help_db = "helper.db"
 
 
 df = pd.read_excel("info/data.xlsx", sheet_name=None)
@@ -16,7 +15,7 @@ df = pd.read_excel("info/data.xlsx", sheet_name=None)
 
 # aplicadores = df['50160']
 #
-auto = trim_auto(df['10400'])
+auto = trim_auto(df["10400"])
 #
 # # maquinas, turnos, tCambios = carga.allInfo(con(db), 'm1')
 #
@@ -24,10 +23,9 @@ auto = trim_auto(df['10400'])
 # # cambios = corte.cambios(auto, maquinas, tCambios)
 #
 # apps = apps(aplicadores)
-genStatus = specificStatus(auto, apps, con(help_db))
+genStatus = specificStatus(auto, con(help_db))
+
+genStatus.to_excel('output.xlsx', index=False)
+
 #
 # # print(aplicadores)
-
-
-
-
